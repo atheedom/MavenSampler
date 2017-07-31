@@ -19,17 +19,30 @@
         <java.version>1.8</java.version>
         <project.organization.name>readlearncode.com</project.organization.name>
 
+        <cargo-maven2-plugin.version>1.6.1</cargo-maven2-plugin.version>
         <!-- Maven plugins -->
         <maven-war-plugin.version>2.4</maven-war-plugin.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 
     <profiles>
         <profile>
-            <id>build_signed_war</id>
-
+            <id>wildfly-standalone</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
@@ -46,60 +59,38 @@
                         <version>3.1.0</version>
 
                         <configuration>
-                            <packagingExcludes>
-                                WEB-INF/classes/builddef.lst
-                            </packagingExcludes>
-
-                            <archive>
-                                <addMavenDescriptor>false</addMavenDescriptor>
-                                <manifestEntries>
-                                    <Built-By>${project.organization.name}</Built-By>
-                                </manifestEntries>
-                            </archive>
-
-                            <!-- output directory is defined in the settings.xml file in the Maven install directory -->
-                            <!--<outputDirectory>${tomcat-deploy-path}</outputDirectory>-->
-
-                            <failOnMissingWebXml>false</failOnMissingWebXml> <!-- By default it is false -->
-
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
                         </configuration>
 
                     </plugin>
 
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jarsigner-plugin</artifactId>
-                        <version>1.4</version>
-                        <executions>
-                            <execution>
-                                <id>sign</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>verify</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <version>${cargo-maven2-plugin.version}</version>
+
                         <configuration>
-                            <keystore>keystore.jks</keystore>
-                            <alias>readlearncode.com</alias>
-                            <storepass>winter04</storepass>
-                            <keypass>winter04</keypass>
-                            <verbose>true</verbose>
-                            <certs>true</certs>
+
+                            <container>
+                                <containerId>wildfly10x</containerId>
+                                <zipUrlInstaller>
+                                    <url>http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip</url>
+                                </zipUrlInstaller>
+                            </container>
+
+                            <configuration>
+                                <properties>
+                                    <cargo.hostname>127.0.0.1</cargo.hostname>
+                                    <cargo.jboss.management-http.port>9990</cargo.jboss.management-http.port>
+                                    <cargo.servlet.users>user:user1234!:user-role</cargo.servlet.users>
+                                </properties>
+                            </configuration>
+
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-
-
     </profiles>
 
 
