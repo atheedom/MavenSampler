@@ -22,6 +22,7 @@
         <cargo-maven2-plugin.version>1.6.1</cargo-maven2-plugin.version>
         <!-- Maven plugins -->
         <maven-war-plugin.version>2.4</maven-war-plugin.version>
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
     </properties>
 
     <dependencies>
@@ -57,6 +58,15 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-war-plugin</artifactId>
                         <version>3.1.0</version>
+                        <configuration>
+                            <archive>
+                                <addMavenDescriptor>false</addMavenDescriptor>
+                                <manifestEntries>
+                                    <Built-By>${project.organization.name}</Built-By>
+                                    <TimeStamp>${maven.build.timestamp}</TimeStamp>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
                     </plugin>
 
                     <plugin>
@@ -67,19 +77,26 @@
                         <configuration>
 
                             <container>
-                                <containerId>wildfly10x</containerId>
-                                <zipUrlInstaller>
-                                    <url>http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip</url>
-                                </zipUrlInstaller>
+                                <containerId>liberty</containerId>
+                                <home>c:\Alex\servers\wlp</home>
                             </container>
 
                             <configuration>
+
                                 <properties>
                                     <cargo.hostname>127.0.0.1</cargo.hostname>
-                                    <cargo.jboss.management-http.port>9990</cargo.jboss.management-http.port>
                                     <cargo.servlet.users>user:user1234!:user-role</cargo.servlet.users>
                                 </properties>
+
                             </configuration>
+
+                            <deployables>
+                                <deployable>
+                                    <properties>
+                                        <context>home</context>
+                                    </properties>
+                                </deployable>
+                            </deployables>
 
                         </configuration>
                     </plugin>
