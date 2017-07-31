@@ -27,6 +27,17 @@
         <github.global.server>github</github.global.server>
     </properties>
 
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>MavenSampler-mvn-repo</id>-->
+            <!--<url>https://raw.github.com/atheedom/MavenSampler/mvn-repo</url>-->
+            <!--<snapshots>-->
+                <!--<enabled>true</enabled>-->
+                <!--<updatePolicy>always</updatePolicy>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
+    <!--</repositories>-->
+
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -34,6 +45,12 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>com.readlearncode</groupId>-->
+            <!--<artifactId>maven-sampler</artifactId>-->
+            <!--<version>1.0</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <distributionManagement>
