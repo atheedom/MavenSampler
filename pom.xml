@@ -5,7 +5,7 @@
     <groupId>com.readlearncode</groupId>
     <artifactId>maven-sampler</artifactId>
     <version>1.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>maven-sampler</name>
 
@@ -35,12 +35,6 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.1.0</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jarsigner-plugin</artifactId>
                 <version>1.4</version>
                 <executions>
@@ -53,6 +47,13 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <archiveDirectory>target</archiveDirectory>
+                    <includes>
+                        <include>*1.0.jar</include>
+                    </includes>
+                    <excludes>
+                        <exclude>*SNAPSHOT.jar</exclude>
+                    </excludes>
                     <keystore>keystore.jks</keystore>
                     <alias>readlearncode.com</alias>
                     <storepass>password</storepass>
