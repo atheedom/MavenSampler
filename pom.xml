@@ -64,7 +64,12 @@
 
                     <container>
                         <containerId>liberty</containerId>
-                        <home>c:\Alex\servers\wlp</home>
+                        <!--<home>c:\Alex\servers\wlp</home>-->
+                        <zipUrlInstaller>
+                            <url>https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/17.0.0.2/wlp-webProfile7-17.0.0.2.zip</url>
+                            <downloadDir>c:/tmp/download</downloadDir>
+                            <extractDir>c:/tmp/servers</extractDir>
+                        </zipUrlInstaller>
                     </container>
 
                     <configuration>
