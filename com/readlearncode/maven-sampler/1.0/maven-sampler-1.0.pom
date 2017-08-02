@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.readlearncode</groupId>
+    <artifactId>maven-sampler</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>maven-sampler</name>
+
+    <prerequisites>
+        <maven>3.2.1</maven>
+    </prerequisites>
+
+    <properties>
+        <!-- Generic properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <project.organization.name>readlearncode.com</project.organization.name>
+
+        <cargo-maven2-plugin.version>1.6.1</cargo-maven2-plugin.version>
+        <!-- Maven plugins -->
+        <maven-war-plugin.version>2.4</maven-war-plugin.version>
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
+        <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+        <github.global.server>github</github.global.server>
+    </properties>
+
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--<id>MavenSampler-mvn-repo</id>-->
+    <!--<url>https://raw.github.com/atheedom/MavenSampler/mvn-repo</url>-->
+    <!--<snapshots>-->
+    <!--<enabled>true</enabled>-->
+    <!--<updatePolicy>always</updatePolicy>-->
+    <!--</snapshots>-->
+    <!--</repository>-->
+    <!--</repositories>-->
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>com.readlearncode</groupId>-->
+        <!--<artifactId>maven-sampler</artifactId>-->
+        <!--<version>1.0</version>-->
+        <!--</dependency>-->
+    </dependencies>
+
+    <!--<distributionManagement>-->
+        <!--<repository>-->
+            <!--<id>repo.stage</id>-->
+            <!--<name>Staging Repository</name>-->
+            <!--<url>file://${project.build.directory}/repo-stage</url>-->
+        <!--</repository>-->
+    <!--</distributionManagement>-->
+
+    <profiles>
+        <profile>
+            <id>github-repo</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <echo>settings.localRepository = ${settings.localRepository}</echo>
+                                        <echo>project.build.directory = ${project.build.directory}</echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.6.1</version>
+                        <configuration>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.1.0</version>
+                    </plugin>
+
+
+                    <plugin>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>2.8.2</version>
+                        <configuration>
+                            <altDeploymentRepository>
+                                repo.stage::default::file://${project.build.directory}/repo-stage
+                            </altDeploymentRepository>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.github.github</groupId>
+                        <artifactId>site-maven-plugin</artifactId>
+                        <version>0.12</version>
+                        <configuration>
+                            <!-- Github settings -->
+                            <server>github</server>
+                            <repositoryName>MavenSampler</repositoryName>
+                            <repositoryOwner>atheedom</repositoryOwner>
+                            <branch>refs/heads/dependency</branch>
+                            <message>Maven artifacts for ${project.version}</message>
+                            <noJekyll>true</noJekyll>
+                            <!-- Deployment values -->
+                            <outputDirectory>${project.build.directory}/repo-stage</outputDirectory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>site</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+</project>
