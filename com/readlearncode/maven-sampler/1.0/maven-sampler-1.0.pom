@@ -127,7 +127,7 @@
                             <repositoryName>MavenSampler</repositoryName>
                             <repositoryOwner>atheedom</repositoryOwner>
                             <branch>refs/heads/dependency</branch>
-                            <message>Maven artifacts for ${project.version}</message>
+                            <message>Artifacts for ${project.groupId}/${project.artifactId}/${project.version}</message>
                             <noJekyll>true</noJekyll>
                             <!-- Deployment values -->
                             <outputDirectory>${project.build.directory}/repo-stage</outputDirectory>
