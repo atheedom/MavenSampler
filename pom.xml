@@ -72,6 +72,25 @@
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <echo>settings.localRepository = ${settings.localRepository} </echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.6.1</version>
                         <configuration>
@@ -84,27 +103,18 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-war-plugin</artifactId>
                         <version>3.1.0</version>
-                        <configuration>
-                            <archive>
-                                <addMavenDescriptor>false</addMavenDescriptor>
-                                <manifestEntries>
-                                    <Built-By>${project.organization.name}</Built-By>
-                                    <TimeStamp>${maven.build.timestamp}</TimeStamp>
-                                </manifestEntries>
-                            </archive>
-                        </configuration>
                     </plugin>
 
 
-                    <plugin>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <version>2.8.1</version>
-                        <configuration>
-                            <altDeploymentRepository>
-                                internal.repo::default::file://${project.build.directory}/mvn-repo
-                            </altDeploymentRepository>
-                        </configuration>
-                    </plugin>
+                    <!--<plugin>-->
+                        <!--<artifactId>maven-deploy-plugin</artifactId>-->
+                        <!--<version>2.8.1</version>-->
+                        <!--<configuration>-->
+                            <!--<altDeploymentRepository>-->
+                                <!--internal.repo::default::file://${project.build.directory}/mvn-repo-->
+                            <!--</altDeploymentRepository>-->
+                        <!--</configuration>-->
+                    <!--</plugin>-->
 
                     <plugin>
                         <groupId>com.github.github</groupId>
@@ -114,6 +124,7 @@
                             <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
                             <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
                             <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+                            <!--<outputDirectory>${settings.localRepository}</outputDirectory>--> <!--C:\Users\Mariu\.m2\repository-->
                             <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
                             <includes><include>**/*</include></includes>
                             <repositoryName>MavenSampler</repositoryName>      <!-- github repo name -->
@@ -124,10 +135,10 @@
                         <executions>
                             <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
                             <execution>
+                                <phase>deploy</phase>
                                 <goals>
                                     <goal>site</goal>
                                 </goals>
-                                <phase>deploy</phase>
                             </execution>
                         </executions>
                     </plugin>
