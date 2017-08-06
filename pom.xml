@@ -14,10 +14,7 @@
     </prerequisites>
 
     <properties>
-        <!-- Generic properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        <project.organization.name>readlearncode.com</project.organization.name>
     </properties>
 
 
