@@ -1,5 +1,4 @@
 # Maven Sampler
--------------------
 
 A collection of different ways to use Maven.
 
